@@ -1,0 +1,71 @@
+package com.example.emicalculator
+
+import android.os.Bundle
+import android.util.Log
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.navigation.compose.rememberNavController
+import com.example.emicalculator.ads.AdManager
+import com.example.emicalculator.ads.ConsentManager
+import com.example.emicalculator.navigation.AppNavGraph
+import com.example.emicalculator.ui.home.EmiViewModel
+import com.example.emicalculator.ui.theme.EmiCalculatorTheme
+import java.util.Locale
+
+class MainActivity : ComponentActivity() {
+
+    private val tag = "MainActivity"
+    private val viewModel: EmiViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Request updated UMP consent information at app launch
+        val consentManager = ConsentManager.getInstance(this)
+        consentManager.gatherConsent(this) { error ->
+            if (error != null) {
+                Log.w(tag, "Consent gathering returned notice: ${error.message}")
+            }
+            // Check if ad requests are permitted before initializing Mobile Ads SDK
+            if (consentManager.canRequestAds) {
+                AdManager.getInstance(this).initializeSdk {
+                    (application as? EmiApplication)?.appOpenAdManager?.loadAd()
+                }
+            }
+        }
+
+        setContent {
+            val selectedLanguage by viewModel.selectedLanguage.collectAsState()
+
+            // Update app locale dynamically based on user preferences
+            LaunchedEffect(selectedLanguage) {
+                val locale = Locale(selectedLanguage)
+                Locale.setDefault(locale)
+                val config = resources.configuration
+                config.setLocale(locale)
+                resources.updateConfiguration(config, resources.displayMetrics)
+            }
+
+            EmiCalculatorTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    val navController = rememberNavController()
+                    AppNavGraph(
+                        navController = navController,
+                        viewModel = viewModel
+                    )
+                }
+            }
+        }
+    }
+}

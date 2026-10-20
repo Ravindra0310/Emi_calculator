@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">EMI Calculator</string>
+    <string name="calculate_emi">Calculate EMI</string>
+    <string name="loan_amount">Loan Amount (Principal)</string>
+    <string name="interest_rate">Annual Interest Rate (%)</string>
+    <string name="tenure">Loan Tenure</string>
+    <string name="years">Years</string>
+    <string name="months">Months</string>
+    <string name="monthly_emi">Monthly EMI</string>
+    <string name="total_interest">Total Interest</string>
+    <string name="total_amount">Total Amount</string>
+    <string name="amortization_schedule">Amortization Schedule</string>
+    <string name="unlock_schedule">Unlock Full Schedule</string>
+    <string name="export_pdf">Export as PDF</string>
+    <string name="export_csv">Export as CSV</string>
+    <string name="principal">Principal</string>
+    <string name="interest">Interest</string>
+    <string name="balance">Balance</string>
+    <string name="select_language">Select Language</string>
+    <string name="english">English</string>
+    <string name="hindi">हिंदी (Hindi)</string>
+    <string name="settings">Settings</string>
+    <string name="privacy_settings">Privacy &amp; Consent</string>
+    <string name="ad_sponsored">Sponsored</string>
+</resources>

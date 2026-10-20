@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ईएमआई कैलकुलेटर</string>
+    <string name="calculate_emi">ईएमआई गणना करें</string>
+    <string name="loan_amount">ऋण राशि (मूलधन)</string>
+    <string name="interest_rate">वार्षिक ब्याज दर (%)</string>
+    <string name="tenure">ऋण अवधि</string>
+    <string name="years">वर्ष</string>
+    <string name="months">महीने</string>
+    <string name="monthly_emi">मासिक ईएमआई</string>
+    <string name="total_interest">कुल ब्याज</string>
+    <string name="total_amount">कुल देय राशि</string>
+    <string name="amortization_schedule">भुगतान अनुसूची</string>
+    <string name="unlock_schedule">पूरी अनुसूची अनलॉक करें</string>
+    <string name="export_pdf">पीडीएफ में निर्यात करें</string>
+    <string name="export_csv">सीएसवी में निर्यात करें</string>
+    <string name="principal">मूलधन</string>
+    <string name="interest">ब्याज</string>
+    <string name="balance">बकाया राशि</string>
+    <string name="select_language">भाषा चुनें</string>
+    <string name="english">English</string>
+    <string name="hindi">हिंदी (Hindi)</string>
+    <string name="settings">सेटिंग्स</string>
+    <string name="privacy_settings">गोपनीयता और सहमति</string>
+    <string name="ad_sponsored">प्रायोजित</string>
+</resources>
