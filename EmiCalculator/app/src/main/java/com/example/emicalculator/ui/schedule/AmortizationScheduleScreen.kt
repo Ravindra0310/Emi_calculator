@@ -47,8 +47,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.emicalculator.R
-import com.example.emicalculator.ads.AdManager
-import com.example.emicalculator.ads.AdPolicy
+import com.example.adslibrary.AdsLibrary
 import com.example.emicalculator.domain.model.AmortizationMonth
 import com.example.emicalculator.domain.model.AmortizationSchedule
 import com.example.emicalculator.ui.home.EmiViewModel
@@ -68,8 +67,8 @@ fun AmortizationScheduleScreen(
 
     fun handleBack() {
         val activity = context as? Activity
-        if (activity != null && AdPolicy.canShowScheduleReturnInterstitial()) {
-            AdManager.getInstance(context).showInterstitialIfAllowed(activity) {
+        if (activity != null) {
+            AdsLibrary.showInterstitialIfAllowed(activity) {
                 onNavigateBack()
             }
         } else {
@@ -95,15 +94,15 @@ fun AmortizationScheduleScreen(
                 val activity = context as? Activity
                 if (activity != null) {
                     Toast.makeText(context, "Watch video to export PDF statement", Toast.LENGTH_SHORT).show()
-                    AdManager.getInstance(context).showRewardedPdf(
+                    AdsLibrary.showRewardedIfAvailable(
                         activity = activity,
-                        onRewardEarned = { viewModel.grantPdfExport() },
-                        onDismissed = { earned ->
+                        onRewardEarned = { _, _ -> viewModel.grantPdfExport() },
+                        onAdClosed = { earned ->
                             if (earned) {
                                 viewModel.exportPdf(
                                     context = context,
                                     onSuccess = { Toast.makeText(context, "PDF Exported!", Toast.LENGTH_SHORT).show() },
-                                    onError = { msg -> Toast.makeText(context, msg, Toast.LENGTH_SHORT).show() }
+                                    onError = { msg -> Toast.makeText(context, msg, Toast.LENGTH_LONG).show() }
                                 )
                             }
                         }

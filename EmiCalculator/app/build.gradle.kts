@@ -59,7 +59,6 @@ dependencies {
     // DataStore Preferences
     implementation(libs.androidx.datastore.preferences)
 
-    // Google Mobile Ads & Consent
-    implementation(libs.play.services.ads)
-    implementation(libs.user.messaging.platform)
+    // ── Ads Library (replaces direct play-services-ads dependency) ────────────
+    implementation(project(":ads-library"))
 }

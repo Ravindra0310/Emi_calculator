@@ -43,9 +43,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.emicalculator.R
+import com.example.adslibrary.AdsLibrary
+import com.example.adslibrary.native_ad.NativeAdComposable
 import com.example.emicalculator.ads.AdConstants
-import com.example.emicalculator.ads.ConsentManager
-import com.example.emicalculator.ui.components.NativeAdComposable
 import com.example.emicalculator.ui.home.EmiViewModel
 import com.example.emicalculator.ui.theme.EmiCalculatorTheme
 
@@ -56,15 +56,14 @@ fun LanguageSettingsScreen(
 ) {
     val context = LocalContext.current
     val currentLanguage by viewModel.selectedLanguage.collectAsState()
-    val consentManager = remember { ConsentManager.getInstance(context) }
 
     LanguageSettingsContent(
         currentLanguage = currentLanguage,
         onLanguageSelected = { viewModel.setLanguage(it) },
         onOpenPrivacyOptions = {
             val activity = context as? Activity
-            if (activity != null) {
-                consentManager.showPrivacyOptionsForm(activity) { error ->
+            if (activity != null && AdsLibrary.privacyOptions.isPrivacyOptionsRequired) {
+                AdsLibrary.privacyOptions.showPrivacyOptionsForm(activity) { error ->
                     if (error != null) {
                         Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
                     } else {

@@ -13,8 +13,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.example.emicalculator.ads.AdManager
-import com.example.emicalculator.ads.ConsentManager
+import com.example.adslibrary.AdsLibrary
 import com.example.emicalculator.navigation.AppNavGraph
 import com.example.emicalculator.ui.home.EmiViewModel
 import com.example.emicalculator.ui.theme.EmiCalculatorTheme
@@ -28,29 +27,30 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Request updated UMP consent information at app launch
-        val consentManager = ConsentManager.getInstance(this)
-        consentManager.gatherConsent(this) { error ->
+        // 1. Gather / refresh UMP consent on every launch.
+        // 2. Initialize the Mobile Ads SDK once consent permits ad requests.
+        AdsLibrary.gatherConsent(this) { error ->
             if (error != null) {
                 Log.w(tag, "Consent gathering returned notice: ${error.message}")
             }
-            // Check if ad requests are permitted before initializing Mobile Ads SDK
-            if (consentManager.canRequestAds) {
-                AdManager.getInstance(this).initializeSdk {
-                    (application as? EmiApplication)?.appOpenAdManager?.loadAd()
-                }
+            if (AdsLibrary.canRequestAds) {
+                AdsLibrary.initializeSdk(this)
             }
+        }
+        // Also init immediately if the previous session already granted consent.
+        if (AdsLibrary.canRequestAds) {
+            AdsLibrary.initializeSdk(this)
         }
 
         setContent {
             val selectedLanguage by viewModel.selectedLanguage.collectAsState()
 
-            // Update app locale dynamically based on user preferences
             LaunchedEffect(selectedLanguage) {
                 val locale = Locale(selectedLanguage)
                 Locale.setDefault(locale)
                 val config = resources.configuration
                 config.setLocale(locale)
+                @Suppress("DEPRECATION")
                 resources.updateConfiguration(config, resources.displayMetrics)
             }
 

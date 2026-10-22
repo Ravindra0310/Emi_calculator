@@ -24,4 +24,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "EmiCalculator"
 include(":app")
- 
+include(":ads-library")

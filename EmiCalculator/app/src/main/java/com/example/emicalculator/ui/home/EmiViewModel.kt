@@ -203,7 +203,6 @@ class EmiViewModel(application: Application) : AndroidViewModel(application) {
     fun completeOnboarding() {
         viewModelScope.launch {
             preferencesRepository.setOnboardingCompleted(true)
-            AdPolicy.isFirstLaunch = false
         }
     }
 

@@ -44,9 +44,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.adslibrary.native_ad.NativeAdComposable
 import com.example.emicalculator.ads.AdConstants
 import com.example.emicalculator.ads.AdPolicy
-import com.example.emicalculator.ui.components.NativeAdComposable
 import com.example.emicalculator.ui.theme.PrimaryBlue
 
 data class OnboardingPageData(
@@ -79,12 +79,10 @@ fun OnboardingScreen(
         )
     )
 
-    // Mark native ad shown according to policy
+    // Load native ad based on page
     LaunchedEffect(currentPage) {
-        when (currentPage) {
-            0 -> if (AdPolicy.canShowOnboardingNativeA()) AdPolicy.markOnboardingNativeAShown()
-            1 -> if (AdPolicy.canShowOnboardingNativeB()) AdPolicy.markOnboardingNativeBShown()
-        }
+        // Native ad is shown on pages 0 and 1;
+        // the library and AdsLibrary.config gates actual loading.
     }
 
     Column(

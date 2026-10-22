@@ -48,11 +48,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.emicalculator.R
+import com.example.adslibrary.AdsLibrary
+import com.example.adslibrary.native_ad.NativeAdComposable
 import com.example.emicalculator.ads.AdConstants
-import com.example.emicalculator.ads.AdManager
 import com.example.emicalculator.domain.model.EmiResult
 import com.example.emicalculator.ui.components.LoanBreakdownBar
-import com.example.emicalculator.ui.components.NativeAdComposable
 import com.example.emicalculator.ui.home.EmiViewModel
 import com.example.emicalculator.ui.theme.AccentTeal
 import com.example.emicalculator.ui.theme.EmiCalculatorTheme
@@ -82,13 +82,13 @@ fun ResultScreen(
                 val activity = context as? Activity
                 if (activity != null) {
                     Toast.makeText(context, "Loading video ad to unlock schedule...", Toast.LENGTH_SHORT).show()
-                    AdManager.getInstance(context).showRewardedSchedule(
+                    AdsLibrary.showRewardedIfAvailable(
                         activity = activity,
-                        onRewardEarned = {
+                        onRewardEarned = { _, _ ->
                             viewModel.unlockSchedule()
                             Toast.makeText(context, "Full schedule unlocked!", Toast.LENGTH_SHORT).show()
                         },
-                        onDismissed = { earned ->
+                        onAdClosed = { earned ->
                             if (earned) {
                                 onNavigateToSchedule()
                             } else {
@@ -112,10 +112,10 @@ fun ResultScreen(
                 val activity = context as? Activity
                 if (activity != null) {
                     Toast.makeText(context, "Watch a short ad to earn a PDF export pass", Toast.LENGTH_SHORT).show()
-                    AdManager.getInstance(context).showRewardedPdf(
+                    AdsLibrary.showRewardedIfAvailable(
                         activity = activity,
-                        onRewardEarned = { viewModel.grantPdfExport() },
-                        onDismissed = { earned ->
+                        onRewardEarned = { _, _ -> viewModel.grantPdfExport() },
+                        onAdClosed = { earned ->
                             if (earned) {
                                 viewModel.exportPdf(
                                     context = context,

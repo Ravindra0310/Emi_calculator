@@ -53,10 +53,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.emicalculator.R
-import com.example.emicalculator.ads.AdConstants
-import com.example.emicalculator.ads.AdManager
+import com.example.adslibrary.AdsLibrary
+import com.example.adslibrary.banner.BannerAdComposable
 import com.example.emicalculator.domain.model.TenureType
-import com.example.emicalculator.ui.components.BannerAdView
 import com.example.emicalculator.ui.theme.EmiCalculatorTheme
 import com.example.emicalculator.ui.theme.PrimaryBlue
 
@@ -93,7 +92,7 @@ fun HomeScreen(
             viewModel.calculateEmi { showInterstitial ->
                 val activity = context as? Activity
                 if (showInterstitial && activity != null) {
-                    AdManager.getInstance(context).showInterstitialIfAllowed(activity) {
+                    AdsLibrary.showInterstitialIfAllowed(activity) {
                         onNavigateToResult()
                     }
                 } else {
@@ -150,7 +149,7 @@ fun HomeScreenContent(
         },
         bottomBar = {
             if (showBannerAd) {
-                BannerAdView(adUnitId = AdConstants.BANNER_HOME)
+                BannerAdComposable()
             }
         }
     ) { innerPadding ->
